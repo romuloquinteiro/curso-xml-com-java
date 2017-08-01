@@ -5,6 +5,11 @@ import java.io.IOException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.xpath.XPath;
+import javax.xml.xpath.XPathConstants;
+import javax.xml.xpath.XPathExpression;
+import javax.xml.xpath.XPathExpressionException;
+import javax.xml.xpath.XPathFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -15,7 +20,7 @@ import br.com.alura.model.Produto;
 
 public class Sistema {
 
-	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException {
+	public static void main(String[] args) throws SAXException, IOException, ParserConfigurationException, XPathExpressionException {
 
 		DocumentBuilderFactory fabrica = DocumentBuilderFactory.newInstance();
 		// necessário para validar o xml com o xsd
@@ -31,7 +36,15 @@ public class Sistema {
 		String moeda = venda.getAttribute("moeda");
 		System.out.println("Moeda: " + moeda + "\n");
 
-		NodeList produtos = document.getElementsByTagName("produto");
+		//String exp = "/venda/produtos/produto";
+		//String exp = "/venda/produtos/produto[2]";
+		//String exp = "/venda/produtos/produto[nome='Livro']";
+		String exp = "/venda/produtos/produto[contains(nome,'java')]";
+		XPath path = XPathFactory.newInstance().newXPath();
+		XPathExpression expressao = path.compile(exp);
+		
+		//NodeList produtos = document.getElementsByTagName("produto");
+		NodeList produtos = (NodeList)expressao.evaluate(document,XPathConstants.NODESET);
 
 		for (int i = 0; i < produtos.getLength(); i++) {
 			Element produto = (Element) produtos.item(i);
@@ -46,3 +59,4 @@ public class Sistema {
 	}
 
 }
+
