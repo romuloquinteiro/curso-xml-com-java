@@ -39,6 +39,7 @@ public class Sistema {
 		//String exp = "/venda/produtos/produto";
 		//String exp = "/venda/produtos/produto[2]";
 		//String exp = "/venda/produtos/produto[nome='Livro']";
+		// fazendo pesquisa com sax
 		String exp = "/venda/produtos/produto[contains(nome,'java')]";
 		XPath path = XPathFactory.newInstance().newXPath();
 		XPathExpression expressao = path.compile(exp);
